@@ -1,0 +1,21 @@
+name : Upload files
+
+on :
+   push :
+     branches : 
+     - master 
+
+jobs :
+   deploy :
+     runs-on : ubuntu-latest 
+     steps : 
+     - uses : actions / checkout @ master 
+     - uses : jakejarvis / s3-sync-action @ master 
+       with :
+           args : --acl public-read --follow-symlinks --delete 
+       env :
+         AWS_S3_BUCKET : s3://safae123 
+         AWS_ACCESS_KEY_ID : AKIARTQGP4BGL4DI4FMR
+         AWS_SECRET_ACCESS_KEY : 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
+         AWS_REGION : ' eu-west-1 '    # facultatif: par défaut us-east-1 
+         SOURCE_DIR : ' public '       # facultatif: par défaut à tout le référentiel
