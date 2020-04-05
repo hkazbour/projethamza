@@ -1,0 +1,29 @@
+pipeline {
+    agent { label 'master' }
+
+    stages {
+        stage('Generic files')
+        {
+            steps {
+                dir('test') {
+                    writeFile file: 'test.csv', text: 'fake csv file for testing'
+                    writeFile file: 'test.log', text: 'fake log file for testing'
+
+                    dir ('results') {
+                        writeFile file: 'test.csv', text: 'fake csv file within results directory'
+                        writeFile file: 'test.log', text: 'fake log file within results directory'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            withAWS(credentials: 'AKIARTQGP4BGL4DI4FMR','5R7YX+RDpLyF2hqmnu23nnPYDhrT2kPTGFSc1Cq2', region: 'eu-west-1') {
+                s3Upload(bucket: "safae123", includePathPattern: "test/results/*", path: "test-dir/")
+                s3Upload(bucket: "safae123", includePathPattern: "test/results/test*", path: "test-dir/")
+                s3Upload(bucket: "safae123", includePathPattern: "test/test*", path: "test-dir/")
+            }
+        }
+    }
