@@ -9,7 +9,7 @@ pipeline {
                     writeFile file: 'test.csv', text: 'fake csv file for testing'
                     writeFile file: 'test.log', text: 'fake log file for testing'
 
-                    dir ('results') {
+                    dir ('resultss') {
                         writeFile file: 'test.csv', text: 'fake csv file within results directory'
                         writeFile file: 'test.log', text: 'fake log file within results directory'
                     }
